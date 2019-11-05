@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # qunarapp
 
 > A Vue.js project
@@ -19,3 +20,6 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# qunarApp
+>>>>>>> 81446c611dce44633f3fde6c7cc7f90d6f21178e
