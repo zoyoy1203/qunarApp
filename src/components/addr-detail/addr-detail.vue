@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="top">
-      <back-head class="header"></back-head>
+      <back-head class="header" :class="headerFlag ? 'active' : ''"></back-head>
       <div class="img_content">
         <img :src="addrDetail.imgbg" alt="">
         <div class="title">
@@ -86,6 +86,7 @@
   export default {
     data(){
       return {
+        headerFlag:false,
         addrDetail:[],
         baseinfo:{},
         imgs:[
@@ -112,12 +113,35 @@
     created () {
       this._getAddrDetail()
     },
+    mounted: function () {
+      document.addEventListener('scroll', this.changeHead, false)
+
+    },
     computed:{
       ...mapGetters([
         'addrId',
       ])
     },
     methods:{
+      changeHead() {
+        const scrollTopHeight = document.documentElement.scrollTop || document.body.scrollTop //滚动高度
+        const clientHeight = document.documentElement.clientHeight || window.screen.availHeight //屏幕可用工作区高度
+        const offsetHeight = document.documentElement.offsetHeight || document.body.offsetHeight //网页可见区域高(包括边线的宽)
+        // console.log(scrollTopHeight, clientHeight, scrollTopHeight + clientHeight + 50, offsetHeight)
+        var header = document.getElementsByClassName('header')[0];
+        if ((scrollTopHeight + clientHeight) + 50 >= offsetHeight && this.isScroll) {
+          this.isScroll = false
+          /*    this.loadingMore = true*/
+          this.offset +=20
+          console.log('请求刷新------------')
+        }
+
+        if(scrollTopHeight  > 50){
+          this.headerFlag = true;
+        }else{
+          this.headerFlag = false;
+        }
+      },
       showImgs() {
         this.imgsActive = true;
       },
@@ -135,6 +159,9 @@
       addrId() {
         this._getAddrDetail()
       }
+    },
+    destroyed() {
+      document.removeEventListener('scroll', this.changeHead, false)
     }
   }
 </script>
@@ -147,9 +174,16 @@
     background: $bgColor2
   }
 .container{
+  height:1600px;
   .top{
     .header{
       color: #fff
+      background: rgba(255,255,255,0)
+      -webkit-transition: all .28s ease-in .1s;
+      transition: all .28s ease-in .1s;
+    }
+    .active{
+      background: $bgColor5
     }
     .img_content{
       img{
